@@ -19,19 +19,28 @@ const VIEWPORT_HEIGHT: f64 = 2.0;
 const VIEWPORT_WIDTH: f64 = APSECT_RATIO * VIEWPORT_HEIGHT; 
 const FOCAL_LENGTH: f64 = 1.0;
 
-pub fn hit_sphere(ray: Ray, sphere_center: Vec3, radius: f64) -> bool {
+pub fn hit_sphere(ray: Ray, sphere_center: Vec3, radius: f64) -> f64 {
     let origin_center = ray.origin - sphere_center;
-    let a = ray.direction.dot(ray.direction);
-    let b = 2.0 * origin_center.dot(ray.direction);
-    let c = origin_center.dot(origin_center) - (radius * radius);
-    let discriminant = (b * b) - (4.0 * a * c);
-    discriminant > 0.0
+    let a = ray.direction.len_squared();
+    let half_b = origin_center.dot(ray.direction);
+    let c = origin_center.len_squared() - (radius * radius);
+    let discriminant = (half_b * half_b) - (a * c);
+    if discriminant < 0.0 {
+        -1.0
+    } else {
+        (-half_b - discriminant.sqrt()) / a
+    }
 }
 
 pub fn ray_color(ray: Ray) -> Vec3 {
-    if hit_sphere(ray, Vec3(0.0, 0.0, -1.0), 0.5) {
-        return Vec3(0.0, 0.0, 0.0);
+    const SPHERE_CENTER: Vec3 = Vec3(0.0, 0.0, -1.0);
+
+    let t = hit_sphere(ray, Vec3(0.0, 0.0, -1.0), 0.5);
+    if t > 0.0 {
+        let normal = (ray.at(t) - SPHERE_CENTER).unit_vector();
+        return 0.5 * (normal + 1.0);
     }
+    
     let unit_direction: Vec3 = ray.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) +  (t * Vec3(1.0, 0.6, 1.7))
