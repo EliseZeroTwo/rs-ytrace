@@ -19,7 +19,19 @@ const VIEWPORT_HEIGHT: f64 = 2.0;
 const VIEWPORT_WIDTH: f64 = APSECT_RATIO * VIEWPORT_HEIGHT; 
 const FOCAL_LENGTH: f64 = 1.0;
 
+pub fn hit_sphere(ray: Ray, sphere_center: Vec3, radius: f64) -> bool {
+    let origin_center = ray.origin - sphere_center;
+    let a = ray.direction.dot(ray.direction);
+    let b = 2.0 * origin_center.dot(ray.direction);
+    let c = origin_center.dot(origin_center) - (radius * radius);
+    let discriminant = (b * b) - (4.0 * a * c);
+    discriminant > 0.0
+}
+
 pub fn ray_color(ray: Ray) -> Vec3 {
+    if hit_sphere(ray, Vec3(0.0, 0.0, -1.0), 0.5) {
+        return Vec3(0.0, 0.0, 0.0);
+    }
     let unit_direction: Vec3 = ray.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) +  (t * Vec3(1.0, 0.6, 1.7))
@@ -30,7 +42,7 @@ fn generate_image() -> Vec<u8> {
 
     let origin = Vec3(0.0, 0.0, 0.0);
     let horizontal = Vec3(VIEWPORT_WIDTH, 0.0, 0.0);
-    let vertical = Vec3(0.0, VIEWPORT_WIDTH, 0.0);
+    let vertical = Vec3(0.0, VIEWPORT_HEIGHT, 0.0);
     let bottom_left_point: Vec3 = origin - (horizontal / 2.0) - (vertical / 2.0) - Vec3(0.0, 0.0, FOCAL_LENGTH);
 
     for y in 0u32..IMAGE_HEIGHT {
