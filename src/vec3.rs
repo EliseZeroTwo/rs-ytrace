@@ -1,10 +1,11 @@
 use std::ops;
+use crate::raytracer::Raytracer;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Vec3(pub f64, pub f64, pub f64);
 
 impl Vec3 {
-    pub fn len_squared(self) -> f64 {
+    pub fn len_squared(&self) -> f64 {
         self.0*self.0 + self.1*self.1 + self.2*self.2
     }
 
@@ -118,3 +119,11 @@ impl ops::DivAssign<f64> for Vec3 {
     }
 }
 
+
+impl ops::Neg for Vec3 {
+    type Output = Vec3;
+
+    fn neg(self) -> Self::Output {
+        Vec3(-self.0, -self.1, -self.2)
+    }
+}
