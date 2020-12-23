@@ -6,7 +6,7 @@ pub struct HitRecord {
     pub t: f64,
     pub p: Vec3,
     pub normal: Vec3,
-    pub front_facing: bool
+    pub front_facing: bool,
 }
 
 impl HitRecord {

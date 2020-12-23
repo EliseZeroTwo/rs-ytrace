@@ -5,7 +5,7 @@ pub struct Camera {
     origin: Vec3,
     horizontal: Vec3,
     vertical: Vec3,
-    bottom_left: Vec3
+    bottom_left: Vec3,
 }
 
 impl Camera {
@@ -17,14 +17,17 @@ impl Camera {
             origin,
             horizontal,
             vertical,
-            bottom_left: origin - (horizontal / 2.0) - (vertical / 2.0) - Vec3(0.0, 0.0, focal_length)
+            bottom_left: origin
+                - (horizontal / 2.0)
+                - (vertical / 2.0)
+                - Vec3(0.0, 0.0, focal_length),
         }
     }
 
     pub fn get_ray(&self, u: f64, v: f64) -> Ray {
         Ray {
             origin: self.origin,
-            direction: self.bottom_left + (u * self.horizontal) + (v * self.vertical) - self.origin
+            direction: self.bottom_left + (u * self.horizontal) + (v * self.vertical) - self.origin,
         }
     }
 }

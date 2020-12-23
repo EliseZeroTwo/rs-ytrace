@@ -1,11 +1,11 @@
-use crate::hittable::Hittable;
 use crate::hittable::HitRecord;
-use crate::vec3::Vec3;
+use crate::hittable::Hittable;
 use crate::ray::Ray;
+use crate::vec3::Vec3;
 
 pub struct Sphere {
     pub center: Vec3,
-    pub radius: f64
+    pub radius: f64,
 }
 
 impl Hittable for Sphere {
@@ -18,7 +18,7 @@ impl Hittable for Sphere {
         if discriminant < 0.0 {
             return None;
         }
-        
+
         let sqrt_discriminant = discriminant.sqrt();
 
         let root = (-half_b - sqrt_discriminant) / a;
@@ -30,7 +30,12 @@ impl Hittable for Sphere {
         }
 
         let p = ray.at(root);
-        let mut record: HitRecord = HitRecord { t: root, p: p, normal: (p - self.center) / self.radius, front_facing: true };
+        let mut record: HitRecord = HitRecord {
+            t: root,
+            p: p,
+            normal: (p - self.center) / self.radius,
+            front_facing: true,
+        };
         record.set_face_normal(ray);
         Some(record)
     }
