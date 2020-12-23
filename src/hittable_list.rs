@@ -1,5 +1,6 @@
 use crate::hittable::HitRecord;
 use crate::hittable::Hittable;
+use crate::material::Material;
 use crate::ray::Ray;
 
 pub struct HittableList(pub Vec<Box<dyn Hittable>>);

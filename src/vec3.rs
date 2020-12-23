@@ -40,6 +40,15 @@ impl Vec3 {
     pub fn unit_vector(self) -> Vec3 {
         (1.0 / self.len()) * self
     }
+
+    pub fn sqrt(self) -> Vec3 {
+        Vec3(self.0.sqrt(), self.1.sqrt(), self.2.sqrt())
+    }
+
+    pub fn near_zero(self) -> bool {
+        const S: f64 = 1e-8;
+        self.0 < S && self.1 < S && self.2 < S
+    }
 }
 
 impl ops::Add<Vec3> for Vec3 {

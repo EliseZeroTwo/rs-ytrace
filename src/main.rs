@@ -2,6 +2,8 @@ mod camera;
 mod color;
 mod hittable;
 mod hittable_list;
+mod material;
+mod random;
 mod ray;
 mod raytracer;
 mod sphere;
@@ -10,16 +12,7 @@ mod vec3;
 extern crate image;
 extern crate rand;
 
-use rand::prelude::*;
-
-use crate::camera::Camera;
-use crate::color::write_color;
-use crate::hittable::Hittable;
-use crate::hittable_list::HittableList;
-use crate::ray::Ray;
 use crate::raytracer::Raytracer;
-use crate::sphere::Sphere;
-use crate::vec3::Vec3;
 use image::EncodableLayout;
 
 const IMAGE_HEIGHT: u32 = 1080;
